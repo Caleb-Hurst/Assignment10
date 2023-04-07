@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.coderscampus.dto.DayResponse;
-import com.coderscampus.dto.Week;
 import com.coderscampus.dto.WeekResponse;
 @Service
 public class Spoonacular {
@@ -16,30 +15,43 @@ public class Spoonacular {
 	
 	public ResponseEntity<DayResponse> callDay(String numCalories,String diet, String exclusions) {	
 		
-		URI uri = UriComponentsBuilder.fromHttpUrl("https://api.spoonacular.com/mealplanner/generate?timeFrame=day")
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("https://api.spoonacular.com/mealplanner/generate?timeFrame=day")
 				.queryParam("timeFrame", "day")
-				.queryParam("targetCalories", numCalories)
-				.queryParam("diet", diet)
-				.queryParam("exclude",exclusions)
-				.queryParam("apiKey", "c4172d94931c4091bac85408ce66ee1f")
-				.build()
-				.toUri();
-				;	
+				.queryParam("apiKey", "c4172d94931c4091bac85408ce66ee1f");
+			if (numCalories !=null) {
+				uriBuilder.queryParam("targetCalories", numCalories);
+			}
+			if(diet != null) {
+				uriBuilder.queryParam("diet", diet);
+			}
+			if(exclusions !=null) {
+				uriBuilder.queryParam("exclude", exclusions);
+			}
+			URI uri = uriBuilder.build().toUri();
+				
+				
+					
 		ResponseEntity<DayResponse> dayResponse = rt.getForEntity(uri, DayResponse.class);
 		return dayResponse;
 		
 	}
 
 	public ResponseEntity<WeekResponse> callWeek(String numCalories, String diet, String exclusions) {
-		URI uri = UriComponentsBuilder.fromHttpUrl("https://api.spoonacular.com/mealplanner/generate?timeFrame=week")
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("https://api.spoonacular.com/mealplanner/generate?timeFrame=week")
 				.queryParam("timeFrame", "week")
-				.queryParam("targetCalories", numCalories)
-				.queryParam("diet", diet)
-				.queryParam("exclude",exclusions)
-				.queryParam("apiKey", "c4172d94931c4091bac85408ce66ee1f")
-				.build()
-				.toUri();
-				;
+				.queryParam("apiKey", "c4172d94931c4091bac85408ce66ee1f");
+		if (numCalories !=null) {
+			uriBuilder.queryParam("targetCalories", numCalories);
+		}
+		if(diet != null) {
+			uriBuilder.queryParam("diet", diet);
+		}
+		if(exclusions !=null) {
+			uriBuilder.queryParam("exclude", exclusions);
+		}
+		URI uri = uriBuilder.build().toUri();
+				
+				
 		ResponseEntity<WeekResponse> weekResponse = rt.getForEntity(uri, WeekResponse.class);
 		return weekResponse;
 	}
